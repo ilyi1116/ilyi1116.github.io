@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App Installation Check</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Check YouBike Pay App Installation</h1>
+    <button id="checkApp">Check App Installation</button>
+    <p id="result"></p>
+
+    <script>
+        document.getElementById('checkApp').addEventListener('click', function() {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            // 檢查平台
+            var isAndroid = /android/i.test(userAgent);
+            var isiOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+
+            if (isAndroid || isiOS) {
+                // 嘗試打開悠遊付 APP，此部分使用偽代碼，實際實現需要使用特定方法如Deep Link
+                var scheme = (isAndroid ? 'youBikePay://app' : 'youBikePay://');
+                var appStoreLink = 'https://apps.apple.com/app/id'; // 請換成悠遊付在 App Store 的真實連結
+                var playStoreLink = 'https://play.google.com/store/apps/details?id='; // 請換成悠遊付在 Play Store 的真實連結
+
+                var timeout = setTimeout(function() {
+                    if (isAndroid) {
+                        window.location = playStoreLink;
+                    } else if (isiOS) {
+                        window.location = appStoreLink;
+                    }
+                }, 500);
+
+                window.location = scheme;
+                window.setTimeout(function() {
+                    clearTimeout(timeout);
+                }, 500);
+            } else {
+                document.getElementById('result').textContent = 'Please use an Android or iOS device.';
+            }
+        });
+    </script>
+</body>
+</html>
